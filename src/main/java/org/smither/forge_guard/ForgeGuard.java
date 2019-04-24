@@ -7,41 +7,36 @@ import org.smither.forge_guard.listeners.JoinListener;
 
 public class ForgeGuard extends Plugin {
 
-    private static ForgeGuard instance;
+	private static ForgeGuard instance;
+	private JoinListener joinListener;
+	private ForgeChannelListener forgeChannelListener;
+	public ForgeGuard() {
+		instance = this;
+	}
 
-    public static ForgeGuard getInstance() {
-        instance = (instance != null) ? instance : new ForgeGuard();
-        return instance;
-    }
+	public static ForgeGuard getInstance() {
+		instance = (instance != null) ? instance : new ForgeGuard();
+		return instance;
+	}
 
-    private JoinListener joinListener;
-    private ForgeChannelListener forgeChannelListener;
+	public void onEnable() {
+		registerListener();
+		registerChannel();
+	}
 
-    private ForgeGuard() {
-    }
+	private void registerChannel() {
+		ProxyServer.getInstance().registerChannel("FML|HS");
+	}
 
-    public void onEnable() {
-        registerListener();
-        registerChannel();
-    }
+	private void registerListener() {
+		joinListener = new JoinListener();
+		forgeChannelListener = new ForgeChannelListener();
+		ProxyServer.getInstance().getPluginManager().registerListener(this, joinListener);
+		ProxyServer.getInstance().getPluginManager().registerListener(this, forgeChannelListener);
+	}
 
-    private void registerChannel() {
-        ProxyServer.getInstance().registerChannel("fml:handshake");
-    }
-
-    private void registerListener() {
-        joinListener=new JoinListener();
-        forgeChannelListener=new ForgeChannelListener();
-        ProxyServer.getInstance()
-            .getPluginManager()
-            .registerListener(this, joinListener);
-        ProxyServer.getInstance()
-            .getPluginManager()
-            .registerListener(this, forgeChannelListener);
-    }
-
-    public void onDisable() {
-        ProxyServer.getInstance().getPluginManager().unregisterListener(joinListener);
-        ProxyServer.getInstance().getPluginManager().unregisterListener(forgeChannelListener);
-    }
+	public void onDisable() {
+		ProxyServer.getInstance().getPluginManager().unregisterListener(joinListener);
+		ProxyServer.getInstance().getPluginManager().unregisterListener(forgeChannelListener);
+	}
 }

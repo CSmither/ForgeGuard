@@ -1,0 +1,4 @@
+name: ForgeGuard
+main: org.smither.forge_guard.ForgeGuard
+version: 0.0.0
+author: Smither
