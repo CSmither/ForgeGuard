@@ -1,17 +1,23 @@
 package org.smither.forge_guard;
 
-import net.md_5.bungee.api.ProxyServer;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class ModChecker {
 
-	ModMonitor modMonitor = ModMonitor.getInstance();
+	private static ModChecker instance;
+
+	public static ModChecker getInstance() {
+		instance = instance != null ? instance : new ModChecker();
+		return instance;
+	}
+
+	private ModMonitor modMonitor = ModMonitor.getInstance();
 
 	public Map<String, Boolean> rateMods(UUID id) {
 		ModData mods = modMonitor.getPlayer(id);
